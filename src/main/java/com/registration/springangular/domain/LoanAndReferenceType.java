@@ -46,3 +46,4 @@ public class LoanAndReferenceType {
     @JoinColumn(name = "home_id")
     List<Home> homeList= new ArrayList<>();
 }
+
