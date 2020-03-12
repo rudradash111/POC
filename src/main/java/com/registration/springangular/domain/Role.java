@@ -1,18 +1,20 @@
 package com.registration.springangular.domain;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity
 @Table(name = "auth_role")
+@Getter
+@Setter
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-            @Column(name = "auth_role_id")
     Long id;
-    @Column(name = "role_name")
     String role;
-    @Column(name = "role_desc")
     String description;
     public Long getId() {
         return id;

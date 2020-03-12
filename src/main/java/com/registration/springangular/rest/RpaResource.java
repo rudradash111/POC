@@ -1,27 +1,28 @@
 package com.registration.springangular.rest;
 
 
-import com.registration.springangular.domain.AssetLiability;
+import com.registration.springangular.domain.*;
 //import com.registration.springangular.repository.RpaRepository;
-import com.registration.springangular.domain.FdAccount;
-import com.registration.springangular.domain.Home;
-import com.registration.springangular.domain.LoanAndReferenceType;
-import com.registration.springangular.repository.FdAccountRepository;
+import com.registration.springangular.dto.Login;
+import com.registration.springangular.dto.USerDto;
+import com.registration.springangular.repository.RegistrationRepository;
 import com.registration.springangular.repository.LoanAndReferenceRepository;
 import com.registration.springangular.repository.RpaRepository;
 //import com.registration.springangular.service.USerDetailsServiceImpl;
+import com.registration.springangular.repository.UserRepository;
 import com.registration.springangular.service.AssetLiabilityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
-
+/*url based security*/
 @CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
 
 @RestController
@@ -31,7 +32,7 @@ public class RpaResource {
 private RpaRepository rpaRepository;
 //            USerDetailsServiceImpl userService;
     @Autowired
-            FdAccountRepository fdAccountRepository;
+    UserRepository userRepository;
     @Autowired
     LoanAndReferenceRepository loanAndReferenceRepository;
     @Autowired
@@ -63,4 +64,33 @@ private RpaRepository rpaRepository;
 
     }
 
+
+
+//if you write below code insted of above code in front end  it always enter into error section at the time of subscription
+/*@RequestMapping(value = "/createRegistration",method = RequestMethod.POST,
+produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity createNewRegistration(@RequestBody Registration registration) {
+      boolean isTrue=assetLiabilityService.createRegistration(registration);
+      if(isTrue) {
+          return new ResponseEntity<>("User already Exist", HttpStatus.BAD_REQUEST);
+      }
+      else {
+          return new ResponseEntity<>("User Created Successfully",HttpStatus.OK);
+      }
+}*/
+    @RequestMapping(value = "/login",method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public void login(@RequestBody Login login) throws Exception {
+        Optional<User> user = userRepository.findByUserName(login.getUserName());
+
+        if (user.get().getUserName().isEmpty()) {
+            throw new Exception();
+        }else {
+            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+            boolean isTrue= encoder.matches( login.getPassword(),user.get().getPassword());
+            if(!isTrue){
+               throw new Exception();
+            }
+        }
+    }
 }

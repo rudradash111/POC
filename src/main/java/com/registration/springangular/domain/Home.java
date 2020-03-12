@@ -11,6 +11,19 @@ import javax.persistence.*;
 @Setter
 public class Home {
     private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    public Long id;
+    private String field;
+    private String assetLiability;
+    private String assetLiabilityType;
+    private String dataSource;
+    private String value1;
+    private String value2;
+    private String value3;
+    private String typeofValue;
+    private String formulaLogic;
+
 
     public Long getId() {
         return id;
@@ -20,10 +33,6 @@ public class Home {
         this.id = id;
     }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    public Long id;
-    private String field;
 
     public String getField() {
         return field;
@@ -96,15 +105,5 @@ public class Home {
     public void setFormulaLogic(String formulaLogic) {
         this.formulaLogic = formulaLogic;
     }
-
-    private String assetLiability;
-    private String assetLiabilityType;
-    private String dataSource;
-    private String value1;
-    private String value2;
-    private String value3;
-    private String typeofValue;
-    private String formulaLogic;
-
 
 }

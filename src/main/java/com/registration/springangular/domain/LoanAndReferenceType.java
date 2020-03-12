@@ -12,8 +12,12 @@ import java.util.List;
 @Entity
 public class LoanAndReferenceType {
     private static final long serialVersionUID = 1L;
-
-
+    @Id
+    private String referenceNumber;
+    private String loanType;
+    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @JoinColumn(name = "home_id")
+    List<Home> homeList= new ArrayList<>();
 
     public String getLoanType() {
         return loanType;
@@ -39,11 +43,6 @@ public class LoanAndReferenceType {
         this.homeList = homeList;
     }
 
-    private String loanType;
-    @Id
-    private String referenceNumber;
-    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-    @JoinColumn(name = "home_id")
-    List<Home> homeList= new ArrayList<>();
+
 }
 

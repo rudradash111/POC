@@ -9,33 +9,36 @@ import java.util.Set;
 @lombok.Setter
 @Entity
 @Table(name = "auth_user")
+/*class is used for handling user information like login.logut,role for that particular user*/
 public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="auth_user_id")
     private Long id;
-    @Column(name = "first_name", nullable = true)
-    String firstName;
-    @Column(name = "last_name", nullable = true)
-    String lastName;
+    @Column(name = "user_name", nullable = true)
+    String userName;
     @NotNull(message = "password may not be null")
     @Column(name = "password", nullable = true)
     String password;
     @NotNull(message = "email should not be null")
     @Column(name = "email")
     String email;
-    @ManyToMany(cascade = {CascadeType.ALL})@JoinTable (name="auth_user_role",joinColumns = @JoinColumn(name ="auth_user_id" ),inverseJoinColumns = @JoinColumn(name = "auth_role_id"))
+    /* @JoinTable it mostly useed to create new extrra table on two entity*/
+    /* it will crete two coloumn name auth_user_id,auth_role_id inside table auth_user_role */
+    @OneToMany(cascade = {CascadeType.ALL})
+    @JoinTable (name="auth_user_role",joinColumns = @JoinColumn(name ="u_id" ),
+            inverseJoinColumns = @JoinColumn(name = "r_id"))
     private Set<Role> roles;
 
-    public User(User users) {
-//        this.active = users.getActive();
-        this.email = users.getEmail();
-        this.roles = users.getRoles();
-        this.firstName = users.getFirstName();
-        this.lastName =users.getLastName();
-        this.id = users.getId();
-        this.password = users.getPassword();
-    }
+//    public User(User users) {
+////        this.active = users.getActive();
+//        this.userName = users.getUserName();
+//        this.email = users.getEmail();
+//        this.password = users.getPassword();
+//        this.roles = users.getRoles();
+//
+//
+//    }
 
     public Set<Role> getRoles() {
         return roles;
@@ -55,21 +58,15 @@ public class User implements Serializable {
         this.id = id;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
-    public String getLastName() {
-        return lastName;
-    }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
 
     public String getPassword() {
         return password;
